@@ -1,25 +1,36 @@
 <script setup>
+import BannerSection from '@/components/BannerSection.vue'
 import AlternatingSection from '@/components/AlternatingSection.vue'
 import ImageGallery from '@/components/ImageGallery.vue'
-import { sections, gallery } from '@/data/bioware'
+import { sections, gallery, reveals } from '@/data/bioware'
+
+// La première section devient la bannière, les autres restent en texte + image
+const [banner, ...others] = sections
 </script>
 
 <template>
+  <BannerSection
+    v-if="banner"
+    title="BioWare"
+    :text="banner.text"
+    :image="banner.image"
+    :alt="banner.alt"
+    :layers="reveals"
+  />
+
   <div class="container page">
-    <h1>BioWare</h1>
     <AlternatingSection
-      v-for="(s, i) in sections"
+      v-for="(s, i) in others"
       :key="i"
       :text="s.text"
       :image="s.image"
       :alt="s.alt"
-      :reverse="i % 2 === 1"
+      :reverse="i % 2 === 0"
     />
     <ImageGallery :items="gallery" />
   </div>
 </template>
 
 <style scoped>
-.page { padding-top: 3rem; }
-h1 { text-align: center; font: 400 2.2rem var(--font-body); margin: 0 0 2rem; }
+.page { width: 100%; padding-top: 3rem; }
 </style>
